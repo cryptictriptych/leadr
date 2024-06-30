@@ -1,0 +1,52 @@
+/////////////////////////////////////////
+//////// Example Leadr Sequences ////////
+/////////////////////////////////////////
+//
+// These examples assume MULTI_LEADR is defined and that custom key names KLEAD
+// and KLEAD2 are assumed to be define by the user, so replace those names with
+// whatever you end up using. If custom keycodes are used, then define the enum
+// in keymap.h. If MULTI_LEADR is _not_ defined, then just ged rid of the
+// KLEAD/KLEAD2 entries and set the leader key from keymap.c.
+
+// Move between tabs
+LEAD(SS_LCTL(SS_LSFT(SS_TAP(X_TAB))), KLEAD, KC_U)
+LEAD(SS_LCTL(SS_TAP(X_TAB)),          KLEAD, KC_I)
+
+// Move between tmux panes
+LEAD(SS_LCTL(SS_TAP(X_B))SS_TAP(X_LEFT),          KLEAD, KC_H)
+LEAD(SS_LCTL(SS_TAP(X_B))SS_TAP(X_DOWN),          KLEAD, KC_J)
+LEAD(SS_LCTL(SS_TAP(X_B))SS_TAP(X_UP),            KLEAD, KC_K)
+LEAD(SS_LCTL(SS_TAP(X_B))SS_TAP(X_RGHT),          KLEAD, KC_L)
+
+// Toggle remote desktop fullscreen
+LEAD(SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DELAY(50)SS_TAP(X_PAUS)SS_UP(X_LCTL)SS_UP(X_LALT), KLEAD, KC_TAB)
+
+// Use a 2nd leader key, which might be associated with other operations like
+// commonly used text input
+LEAD("if () {"SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT),    KLEAD2, KC_I, KC_F)
+LEAD("for () {"SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT),   KLEAD2, KC_F, KC_O, KC_R)
+LEAD("while () {"SS_TAP(X_LEFT)SS_TAP(X_LEFT)SS_TAP(X_LEFT), KLEAD2, KC_W, KC_H, KC_I)
+
+// Some constants
+LEAD("3.141592653589793116", KLEAD2, KC_P,KC_I)
+LEAD("1.570796326794896558", KLEAD2, KC_P,KC_I,KC_2)
+LEAD("0.785398163397448279", KLEAD2, KC_P,KC_I,KC_4)
+LEAD("0.392699081698724139", KLEAD2, KC_P,KC_I,KC_8)
+LEAD("6.283185307179586232", KLEAD2, KC_2,KC_P,KC_I)
+LEAD("2.718281828459045091", KLEAD2, KC_E)
+
+// just define an action, which can be referenced via leadr_process_user
+LEADACT(CAPSWORD_TOGG, KLEAD, KC_C, KC_A, KC_P)
+
+// tag an output with an action, that can be handled after text is sent
+LEADLBL(PRINT_MODTAP_TIMEOUT, "custom timeout is = ", KLEAD, KC_M, KC_T, KC_T, KC_O)
+
+// To do something with the actions, add something like the following code to your keymap.c
+//    void leadr_process_user(enum leadr_id leadr_entry) {
+//        switch (leadr_entry) {
+//            case CAPSWORD_TOGG: caps_word_toggle(); break;
+//            case PRINT_MODTAP_TIMEOUT: print_custom_timeout_value(); break;
+//            ...
+//        }
+//    }
+
